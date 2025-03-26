@@ -1,0 +1,128 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>{{ product_title }} - African Sun</title>
+    <link
+      rel="stylesheet"
+      href="{{ url_for('static', filename='css/main.css') }}"
+    />
+  </head>
+  <body>
+    <header>{% include 'components/header.html' %}</header>
+
+    <main>
+      <section class="product-hero">
+        <h1>{{ product_title }}</h1>
+      </section>
+
+      <section class="product-details">
+        <div class="product-gallery">
+          <div class="main-image">
+            <img
+              src="{{ url_for('static', filename='images/products/' + product_id + '/main.jpg') }}"
+              alt="{{ product_title }}"
+            />
+          </div>
+          <div class="thumbnail-gallery">
+            <img
+              src="{{ url_for('static', filename='images/products/' + product_id + '/1.jpg') }}"
+              alt="{{ product_title }} 1"
+            />
+            <img
+              src="{{ url_for('static', filename='images/products/' + product_id + '/2.jpg') }}"
+              alt="{{ product_title }} 2"
+            />
+            <img
+              src="{{ url_for('static', filename='images/products/' + product_id + '/3.jpg') }}"
+              alt="{{ product_title }} 3"
+            />
+          </div>
+        </div>
+
+        <div class="product-info">
+          <h2>About {{ product_title }}</h2>
+          <p>
+            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam
+            auctor, nisl eget ultricies tincidunt, nisl nisl aliquam nisl, eget
+            ultricies nisl nisl eget nisl.
+          </p>
+
+          <h3>Features</h3>
+          <ul>
+            <li>High-quality materials</li>
+            <li>Weather-resistant</li>
+            <li>Durable construction</li>
+            <li>Custom sizing available</li>
+            <li>Professional installation</li>
+          </ul>
+
+          <button id="quote-btn" class="btn primary-btn">
+            Request a Quote
+          </button>
+        </div>
+      </section>
+
+      <section class="related-products">
+        <h2>Related Products</h2>
+        <div class="product-grid">
+          <!-- This would be dynamically generated in a real app -->
+          <div class="product-card">
+            <img
+              src="{{ url_for('static', filename='images/products/placeholder.jpg') }}"
+              alt="Related Product"
+            />
+            <h3>Related Product</h3>
+            <a href="#" class="btn secondary-btn">View Details</a>
+          </div>
+          <div class="product-card">
+            <img
+              src="{{ url_for('static', filename='images/products/placeholder.jpg') }}"
+              alt="Related Product"
+            />
+            <h3>Related Product</h3>
+            <a href="#" class="btn secondary-btn">View Details</a>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <!-- Quote Request Modal -->
+    <div id="quote-modal" class="modal">
+      <div class="modal-content">
+        <span class="close-btn">&times;</span>
+        <h2>Request a Quote for {{ product_title }}</h2>
+        <form id="quote-form">
+          <div class="form-group">
+            <label for="quote-name">Name</label>
+            <input type="text" id="quote-name" name="name" required />
+          </div>
+          <div class="form-group">
+            <label for="quote-email">Email</label>
+            <input type="email" id="quote-email" name="email" required />
+          </div>
+          <div class="form-group">
+            <label for="quote-phone">Phone</label>
+            <input type="tel" id="quote-phone" name="phone" />
+          </div>
+          <div class="form-group">
+            <label for="quote-details">Details</label>
+            <textarea
+              id="quote-details"
+              name="details"
+              rows="5"
+              required
+            ></textarea>
+          </div>
+          <button type="submit" class="btn primary-btn">Submit Request</button>
+        </form>
+      </div>
+    </div>
+
+    <footer>{% include 'components/footer.html' %}</footer>
+
+    <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/product.js') }}"></script>
+  </body>
+</html>

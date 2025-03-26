@@ -1,0 +1,118 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Why Choose Us - African Sun</title>
+    <link
+      rel="stylesheet"
+      href="{{ url_for('static', filename='css/main.css') }}"
+    />
+  </head>
+  <body>
+    <header>{% include 'components/header.html' %}</header>
+
+    <main>
+      <section class="why-us-hero">
+        <h1>Why Choose African Sun</h1>
+        <p>Discover what sets us apart from the competition</p>
+      </section>
+
+      <section class="why-us-content">
+        <div class="reason-card">
+          <div class="reason-icon">🏆</div>
+          <h2>Experience</h2>
+          <p>
+            With over 20 years in the industry, we have the expertise to deliver
+            exceptional quality and service.
+          </p>
+        </div>
+
+        <div class="reason-card">
+          <div class="reason-icon">✨</div>
+          <h2>Quality Materials</h2>
+          <p>
+            We use only the highest quality materials to ensure durability and
+            longevity of our products.
+          </p>
+        </div>
+
+        <div class="reason-card">
+          <div class="reason-icon">🛠️</div>
+          <h2>Custom Solutions</h2>
+          <p>
+            We specialize in creating custom solutions tailored to your specific
+            needs and requirements.
+          </p>
+        </div>
+
+        <div class="reason-card">
+          <div class="reason-icon">👥</div>
+          <h2>Customer Service</h2>
+          <p>
+            Our dedicated team provides exceptional customer service from
+            initial consultation to after-sales support.
+          </p>
+        </div>
+
+        <div class="reason-card">
+          <div class="reason-icon">🔄</div>
+          <h2>Warranty</h2>
+          <p>
+            We stand behind our products with comprehensive warranties and
+            maintenance services.
+          </p>
+        </div>
+
+        <div class="reason-card">
+          <div class="reason-icon">🌍</div>
+          <h2>Local Expertise</h2>
+          <p>
+            As a South African company, we understand local conditions and
+            requirements better than anyone.
+          </p>
+        </div>
+      </section>
+
+      <section class="testimonials">
+        <h2>What Our Customers Say</h2>
+        <div class="testimonial-slider">
+          <div class="testimonial">
+            <p class="quote">
+              "African Sun provided us with an excellent custom tent solution
+              for our event. The quality was outstanding and the service was
+              impeccable."
+            </p>
+            <p class="author">- John Smith, Event Organizer</p>
+          </div>
+          <div class="testimonial">
+            <p class="quote">
+              "We've been using African Sun's shade ports for our business for
+              over 5 years. They've withstood all weather conditions and still
+              look great."
+            </p>
+            <p class="author">- Sarah Johnson, Business Owner</p>
+          </div>
+          <div class="testimonial">
+            <p class="quote">
+              "The team at African Sun went above and beyond to create a custom
+              awning for our unique space. Highly recommended!"
+            </p>
+            <p class="author">- Michael Brown, Homeowner</p>
+          </div>
+        </div>
+      </section>
+
+      <section class="cta-section">
+        <h2>Ready to Experience the African Sun Difference?</h2>
+        <p>Contact us today to discuss your project or request a quote.</p>
+        <a href="/contact" class="btn primary-btn">Contact Us</a>
+      </section>
+    </main>
+
+    <footer>{% include 'components/footer.html' %}</footer>
+
+    <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/why_us.js') }}"></script>
+  </body>
+</html>

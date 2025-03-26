@@ -1,0 +1,22 @@
+<nav class="main-nav">
+  <div class="logo">
+    <a href="/">
+      <img
+        src="{{ url_for('static', filename='images/new-logo.svg') }}"        
+        alt="African Sun Logo"
+      />
+    </a>
+  </div>
+  <ul class="nav-links">
+    <li><a href="/">Home</a></li>
+    <li><a href="/why-us">Why Us</a></li>
+    <li><a href="/rental">Rentals</a></li>    
+    <li><a href="/contact">Contact</a></li>
+  </ul>
+  <div class="language-selector">
+    <select id="language-select" onchange="changeLanguage()">
+      <option value="en">English</option>
+      <option value="af">Afrikaans</option>
+    </select>
+  </div>
+</nav> 
