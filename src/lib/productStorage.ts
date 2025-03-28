@@ -1,121 +1,180 @@
-import { Product } from "../components/ProductPage";
+export interface Product {
+  id: number;
+  name: string;
+  description: string;
+  image: string;
+  images?: string[];
+  category: string;
+  subcategories?: string[];
+  capacity?: string;
+  weight?: string;
+  seasonality?: string;
+}
 
 // Default product data that will be used if no saved data exists
 export const defaultProducts: Product[] = [
   {
     id: 1,
-    name: "Tarpaulins",
+    name: "Custom Tarpaulins",
     description:
-      "Heavy-duty waterproof PVC tarpaulins for various outdoor applications. Using our specialized high frequency sealing machines we are able to custom make tarpaulins to fit your load and storage needs which means the tarps never end up too big or too small. We can also stencil your company name in bold 30cm letters onto the tarp for advertising while the truck is out and identification if the tarp is stolen. We can fit solid brass eyelets to your requirements and have a quick turn-around time on all tarpaulin repairs.",
+      "Professional-grade custom tarpaulins tailored to your specific requirements. Our high-frequency sealing machines create custom-fit tarpaulins for various applications.",
     image: "/images/products/tarpaulins/main.jpg",
     images: [
       "/images/products/tarpaulins/main.jpg",
       "/images/products/tarpaulins/1.jpg",
-      "/images/products/tarpaulins/2.jpg",
-      "/images/products/tarpaulins/3.jpg",
+      "https://images.unsplash.com/photo-1518889735218-3e3a03fd3128?w=800&q=80",
+      "https://images.unsplash.com/photo-1531913223931-b0d3198229ee?w=800&q=80",
     ],
-    category: "PVC Products",
+    category: "Tarpaulins",
+    subcategories: ["Custom Tarpaulins"],
     weight: "Medium",
     seasonality: "All-Season",
   },
   {
     id: 2,
-    name: "Vehicle Covers",
+    name: "Bakkie Covers",
     description:
-      "Custom-fit protective covers for cars, trucks, and other vehicles. Flat covers on the back of pickup trucks. Txopela doors and roofs. Boat covers. Frames and covers for large trucks.",
+      "Premium bakkie covers designed to protect your pickup truck from weather elements and UV damage. Our custom-designed covers are durable and provide excellent protection.",
     image: "/images/products/vehicle-covers/main.jpg",
     images: [
       "/images/products/vehicle-covers/main.jpg",
-      "https://api.tempolabs.ai/proxy-asset?url=https://storage.googleapis.com/tempo-public-assets/vehicle-cover-1.jpg",
-      "https://api.tempolabs.ai/proxy-asset?url=https://storage.googleapis.com/tempo-public-assets/vehicle-cover-2.jpg",
-      "https://api.tempolabs.ai/proxy-asset?url=https://storage.googleapis.com/tempo-public-assets/vehicle-cover-3.jpg",
-      "https://api.tempolabs.ai/proxy-asset?url=https://storage.googleapis.com/tempo-public-assets/vehicle-cover-4.jpg",
-      "https://api.tempolabs.ai/proxy-asset?url=https://storage.googleapis.com/tempo-public-assets/vehicle-cover-5.jpg",
+      "/images/products/vehicle-covers/1.jpg",
+      "https://images.unsplash.com/photo-1533473359331-0135ef1b58bf?w=800&q=80",
     ],
-    category: "Covers",
+    category: "Vehicle Covers",
+    subcategories: ["Bakkie Covers"],
     weight: "Medium",
     seasonality: "All-Season",
   },
   {
     id: 3,
-    name: "Car Shade Ports",
+    name: "Vehicle Covers",
     description:
-      "Protect your car from the sun, heat, weathering and bird droppings with one of our car shade ports. We have standard designs or we can make custom shade ports to suit your yard and needs. We have a wide range of colours in material proven to stand up to the Moçambique sun.",
-    image: "/images/products/shade-ports/main.jpg",
+      "High-quality vehicle covers for cars and trucks. Protect your vehicle from dust, sun damage, and environmental elements with our durable and custom-fitted covers.",
+    image: "/images/products/vehicle-covers/2.jpg",
     images: [
-      "/images/products/shade-ports/main.jpg",
-      "/images/products/shade-ports/1.jpg",
-      "/images/products/shade-ports/2.jpg",
-      "/images/products/shade-ports/3.jpg",
+      "/images/products/vehicle-covers/2.jpg",
+      "/images/products/vehicle-covers/3.jpg",
+      "https://images.unsplash.com/photo-1492144534655-ae79c964c9d7?w=800&q=80",
     ],
-    category: "Shade Structures",
-    capacity: "1-2 Vehicles",
-    weight: "Heavy",
+    category: "Vehicle Covers",
+    subcategories: ["Vehicle Covers"],
+    weight: "Medium",
     seasonality: "All-Season",
   },
   {
     id: 4,
-    name: "Tents", 
+    name: "Txopela Door Covers",
     description:
-      "We offer a diverse range of tents designed for various events and needs. Whether it's for a wedding, corporate event, or outdoor party, we have a tent solution that fits your requirements. Contact us for options on custom sizes and layouts.",
-        image: "/images/products/tents/main.jpg",
+      "Specialized door covers for Txopela vehicles. Our products are designed to enhance functionality and provide protection for your Txopela doors.",
+    image:
+      "https://images.unsplash.com/photo-1581291518633-83b4ebd1d83e?w=800&q=80",
     images: [
-      "/images/products/tents/main.jpg",
-      "/images/products/tents/1.jpg",
-      "/images/products/tents/2.jpg",
-      "/images/products/tents/3.jpg",
+      "https://images.unsplash.com/photo-1581291518633-83b4ebd1d83e?w=800&q=80",
+      "https://images.unsplash.com/photo-1494976388531-d1058494cdd8?w=800&q=80",
     ],
-    category: "Tents",
-    capacity: "Various Sizes",
-    weight: "Medium to Heavy",
-    seasonality: "All-Season",
-  },
-  {
-    id: 7,
-    name: "18x9 Marquee tent",
-    description:
-      "Our 18x9 Marquee tent is perfect for large gatherings, providing ample space and elegant cover. Ideal for weddings, corporate events, and large parties. ",
-    image: "public/images/products/tents/1.jpg",
-    images: [
-      "public/images/products/tents/1.jpg",
-      "public/images/products/tents/2.jpg",
-      "public/images/products/tents/3.jpg",
-    ],
-    category: "Tents",
-    capacity: "Large Groups",
-    weight: "Heavy",
+    category: "Txopela Accessories",
+    subcategories: ["Txopela Door Covers"],
+    weight: "Medium",
     seasonality: "All-Season",
   },
   {
     id: 5,
-    name: "Custom Work",
+    name: "Awnings",
     description:
-      "Bespoke PVC and canvas solutions tailored to your specific requirements",
+      "Durable and stylish awnings for residential and commercial applications. Provide shade and protection from the elements with our custom-designed awnings.",
+    image: "/images/products/awnings/main.jpg",
+    images: [
+      "/images/products/awnings/main.jpg",
+      "/images/products/awnings/1.jpg",
+      "https://images.unsplash.com/photo-1523712999610-f77fbcfc3843?w=800&q=80",
+    ],
+    category: "Awnings",
+    subcategories: ["Awnings"],
+    weight: "Medium to Heavy",
+    seasonality: "All-Season",
+  },
+  {
+    id: 6,
+    name: "Drop Blinds",
+    description:
+      "Custom drop blinds for patios, verandas, and outdoor spaces. Control light, privacy, and temperature with our high-quality drop blinds.",
+    image:
+      "https://images.unsplash.com/photo-1470753323753-3f8091bb0232?w=800&q=80",
+    images: [
+      "https://images.unsplash.com/photo-1470753323753-3f8091bb0232?w=800&q=80",
+      "https://images.unsplash.com/photo-1533603208986-24fd819e718a?w=800&q=80",
+    ],
+    category: "Blinds",
+    subcategories: ["Drop Blinds"],
+    weight: "Light to Medium",
+    seasonality: "All-Season",
+  },
+  {
+    id: 7,
+    name: "2.5m x 2.5m 4-Man Dome Tent",
+    description:
+      "Compact 2.5m x 2.5m dome tent perfect for small groups or families. Comfortably fits 4 people with easy setup and takedown.",
+    image: "/images/products/tents/main.jpg",
+    images: [
+      "/images/products/tents/main.jpg",
+      "/images/products/tents/1.jpg",
+      "https://images.unsplash.com/photo-1504280390367-361c6d9f38f4?w=800&q=80",
+    ],
+    category: "Tents",
+    subcategories: ["2.5m x 2.5m 4-Man Dome Tent"],
+    capacity: "4 People",
+    weight: "Medium",
+    seasonality: "All-Season",
+  },
+  {
+    id: 8,
+    name: "3m x 3m 6-Man Dome Tent",
+    description:
+      "Spacious 3m x 3m dome tent ideal for larger groups. Comfortably accommodates 6 people with durable materials and weather-resistant design.",
+    image:
+      "https://images.unsplash.com/photo-1478131143081-80f7f84ca84d?w=800&q=80",
+    images: [
+      "https://images.unsplash.com/photo-1478131143081-80f7f84ca84d?w=800&q=80",
+      "https://images.unsplash.com/photo-1504280390367-361c6d9f38f4?w=800&q=80",
+    ],
+    category: "Tents",
+    subcategories: ["3m x 3m 6-Man Dome Tent"],
+    capacity: "6 People",
+    weight: "Medium to Heavy",
+    seasonality: "All-Season",
+  },
+  {
+    id: 9,
+    name: "Seat Covers",
+    description:
+      "Premium seat covers for vehicles of all types. Protect your car's interior with our durable and stylish seat covers that are easy to install and clean.",
+    image:
+      "https://images.unsplash.com/photo-1549317661-bd32c8ce0db2?w=800&q=80",
+    images: [
+      "https://images.unsplash.com/photo-1549317661-bd32c8ce0db2?w=800&q=80",
+      "https://images.unsplash.com/photo-1533473359331-0135ef1b58bf?w=800&q=80",
+    ],
+    category: "Vehicle Covers",
+    subcategories: ["Seat Covers"],
+    weight: "Light",
+    seasonality: "All-Season",
+  },
+  {
+    id: 10,
+    name: "All Custom Work",
+    description:
+      "Bespoke PVC and canvas solutions tailored to your specific requirements. Our team of experts can design and manufacture custom products to meet your unique needs and specifications.",
     image: "/images/products/custom-work/main.jpg",
     images: [
       "/images/products/custom-work/main.jpg",
       "/images/products/custom-work/1.jpg",
       "/images/products/custom-work/2.jpg",
-      "/images/products/custom-work/3.jpg",
+      "https://images.unsplash.com/photo-1581093458791-9d15482442f5?w=800&q=80",
     ],
-    category: "Custom",
+    category: "Custom Work",
+    subcategories: ["All Custom Work"],
     weight: "Varies",
-    seasonality: "All-Season",
-  },
-  {
-    id: 6,
-    name: "Awnings and Drop Blinds",
-    description:
-      "Enhance your outdoor entertaining space at your home, café or business with a cover or blind that is stylish, durable and effective. Retractable options let you choose the balance of sun and shade so you can make the most of being outside whilst remaining cool. Custom designs and a wide range of colours and materials ensure you get the look and feel that you want to add value to your property or business.",
-    image: "/images/products/awnings/main.jpg",
-    images: [
-      "/images/products/awnings/main.jpg",
-      "/images/products/awnings/1.jpg",
-      "/images/products/awnings/2.jpg",
-      "/images/products/awnings/3.jpg",
-    ],
-    category: "Shade Solutions",
-    weight: "Medium",
     seasonality: "All-Season",
   },
 ];
@@ -132,6 +191,11 @@ export const loadProducts = (): Product[] => {
     return defaultProducts;
   }
 };
+
+/**
+ * Get products - alias for loadProducts for better semantic naming
+ */
+export const getProducts = loadProducts;
 
 /**
  * Save products to localStorage

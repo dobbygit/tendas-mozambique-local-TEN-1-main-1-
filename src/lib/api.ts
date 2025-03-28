@@ -39,84 +39,32 @@ export async function submitRentalRequest(
  */
 export async function getAvailableRentalItems() {
   // In a real implementation, this would fetch data from an API
-  // For now, we'll return hardcoded data
+  // For now, we'll return hardcoded data with only the two specified products
 
   return [
     {
       id: 1,
-      name: "Event Tent (Large)",
+      name: "18x9 200man Marquee tent",
       description:
-        "Spacious tent perfect for weddings, corporate events, and large gatherings. Includes setup and takedown.",
+        "Spacious marquee tent perfect for large events, weddings, and corporate gatherings. Accommodates up to 200 people with professional setup and takedown included.",
       image:
         "https://images.unsplash.com/photo-1478827387698-1527781a4887?w=800&q=80",
-      dailyRate: "$250",
-      weeklyRate: "$1,200",
-      deposit: "$500",
+      dailyRate: "$350",
+      weeklyRate: "$1,800",
+      deposit: "$700",
       category: "tents",
       available: true,
     },
     {
       id: 2,
-      name: "Family Camping Tent",
+      name: "5x5 event tents",
       description:
-        "Comfortable 6-person tent with weather-resistant materials, perfect for family camping trips.",
-      image:
-        "https://images.unsplash.com/photo-1504280390367-361c6d9f38f4?w=800&q=80",
-      dailyRate: "$45",
-      weeklyRate: "$225",
-      deposit: "$100",
-      category: "tents",
-      available: true,
-    },
-    {
-      id: 3,
-      name: "Car Shade Port",
-      description:
-        "Durable shade structure to protect vehicles from sun and weather. Easy to install and highly portable.",
-      image:
-        "https://images.unsplash.com/photo-1489824904134-891ab64532f1?w=800&q=80",
-      dailyRate: "$35",
-      weeklyRate: "$175",
-      deposit: "$75",
-      category: "shade",
-      available: true,
-    },
-    {
-      id: 4,
-      name: "Heavy-Duty Tarpaulin",
-      description:
-        "Waterproof PVC tarpaulin for various outdoor applications. Multiple sizes available.",
-      image:
-        "https://images.unsplash.com/photo-1508873696983-2dfd5898f08b?w=800&q=80",
-      dailyRate: "$15",
-      weeklyRate: "$75",
-      deposit: "$30",
-      category: "covers",
-      available: true,
-    },
-    {
-      id: 5,
-      name: "Retractable Awning",
-      description:
-        "Stylish and functional awning for residential and commercial spaces. Professional installation included.",
-      image:
-        "https://images.unsplash.com/photo-1595111633191-7a8c1b16c722?w=800&q=80",
-      dailyRate: "$60",
-      weeklyRate: "$300",
-      deposit: "$150",
-      category: "shade",
-      available: true,
-    },
-    {
-      id: 6,
-      name: "Market Stall Tent",
-      description:
-        "Compact and easy-to-setup tent perfect for market stalls, small events, and outdoor displays.",
+        "Versatile 5x5 meter event tents ideal for smaller gatherings, market stalls, and outdoor displays. Easy to set up and transport.",
       image:
         "https://images.unsplash.com/photo-1523987355523-c7b5b0dd90a7?w=800&q=80",
-      dailyRate: "$40",
-      weeklyRate: "$200",
-      deposit: "$80",
+      dailyRate: "$120",
+      weeklyRate: "$600",
+      deposit: "$250",
       category: "tents",
       available: true,
     },

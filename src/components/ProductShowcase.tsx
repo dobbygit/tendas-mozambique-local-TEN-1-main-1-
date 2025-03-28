@@ -1,12 +1,31 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, {
+  useState,
+  useEffect,
+  useRef,
+  useMemo,
+  useCallback,
+} from "react";
 import { motion, useAnimation, useInView } from "framer-motion";
 import { Card, CardContent } from "./ui/card";
 import { Button } from "./ui/button";
-import { Eye, Star, Image as ImageIcon, ArrowRight } from "lucide-react";
+import {
+  Eye,
+  Star,
+  Image as ImageIcon,
+  ArrowRight,
+  ChevronLeft,
+  ChevronRight,
+  Tag,
+  ShieldCheck,
+  Sparkles,
+} from "lucide-react";
 import { useLanguage } from "./LanguageContext";
 import BackgroundTrees from "./BackgroundTrees";
 import ImageGallery from "./ImageGallery";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
+import { loadProducts } from "../lib/productStorage";
+import { defaultProducts } from "../lib/productStorage";
+import useEmblaCarousel from "embla-carousel-react";
 
 interface Product {
   id: number;
@@ -15,6 +34,7 @@ interface Product {
   image: string;
   images?: string[];
   category: string;
+  subcategories?: string[];
   capacity?: string;
   weight?: string;
   seasonality?: string;
@@ -29,107 +49,9 @@ interface ProductShowcaseProps {
 const ProductShowcase = ({
   title = "Premium Outdoor Tents",
   subtitle = "Explore our range of high-quality tents for camping, events, and outdoor adventures",
-  products = [
-    {
-      id: 1,
-      name: "Tarpaulins",
-      description:
-        "Heavy-duty waterproof PVC tarpaulins for various outdoor applications. Using our specialized high frequency sealing machines we are able to custom make tarpaulins to fit your load and storage needs which means the tarps never end up too big or too small. We can also stencil your company name in bold 30cm letters onto the tarp for advertising while the truck is out and identification if the tarp is stolen. We can fit solid brass eyelets to your requirements and have a quick turn-around time on all tarpaulin repairs.",
-      image: "/images/products/tarpaulins/main.jpg",
-      images: [
-        "/images/products/tarpaulins/main.jpg",
-        "/images/products/tarpaulins/1.jpg",
-        "/images/products/tarpaulins/2.jpg",
-        "/images/products/tarpaulins/3.jpg",
-      ],
-      category: "PVC Products",
-      weight: "Medium",
-      seasonality: "All-Season",
-    },
-    {
-      id: 2,
-      name: "Vehicle Covers",
-      description:
-        "Custom-fit protective covers for cars, trucks, and other vehicles. Flat covers on the back of pickup trucks. Txopela doors and roofs. Boat covers. Frames and covers for large trucks.",
-      image: "/images/products/vehicle-covers/main.jpg",
-      images: [
-        "/images/products/vehicle-covers/main.jpg",
-        "/images/products/vehicle-covers/1.jpg",
-        "/images/products/vehicle-covers/2.jpg",
-        "/images/products/vehicle-covers/3.jpg",
-      ],
-      category: "Covers",
-      weight: "Medium",
-      seasonality: "All-Season",
-    },
-    {
-      id: 3,
-      name: "Car Shade Ports",
-      description:
-        "Protect your car from the sun, heat, weathering and bird droppings with one of our car shade ports. We have standard designs or we can make custom shade ports to suit your yard and needs. We have a wide range of colours in material proven to stand up to the Moçambique sun.",
-      image: "/images/products/shade-ports/main.jpg",
-      images: [
-        "/images/products/shade-ports/main.jpg",
-        "/images/products/shade-ports/1.jpg",
-        "/images/products/shade-ports/2.jpg",
-        "/images/products/shade-ports/3.jpg",
-      ],
-      category: "Shade Structures",
-      capacity: "1-2 Vehicles",
-      weight: "Heavy",
-      seasonality: "All-Season",
-    },
-    {
-      id: 4,
-      name: "Tents",
-      description:
-        "Using only the best materials and designs we are suppliers to many heavy duty users such as: Safari camps. Long term construction camps. The military. The Police. We make standard tents and custom tents – from the smallest dome tent to the largest party marquee or warehouse tent.",
-      image: "/images/products/tents/main.jpg",
-      images: [
-        "/images/products/tents/main.jpg",
-        "/images/products/tents/1.jpg",
-        "/images/products/tents/2.jpg",
-        "/images/products/tents/3.jpg",
-      ],
-      category: "Tents",
-      capacity: "Various Sizes",
-      weight: "Medium to Heavy",
-      seasonality: "All-Season",
-    },
-    {
-      id: 5,
-      name: "Custom Work",
-      description:
-        "Bespoke PVC and canvas solutions tailored to your specific requirements",
-      image: "/images/products/custom-work/main.jpg",
-      images: [
-        "/images/products/custom-work/main.jpg",
-        "/images/products/custom-work/1.jpg",
-        "/images/products/custom-work/2.jpg",
-        "/images/products/custom-work/3.jpg",
-      ],
-      category: "Custom",
-      weight: "Varies",
-      seasonality: "All-Season",
-    },
-    {
-      id: 6,
-      name: "Awnings and Drop Blinds",
-      description:
-        "Stylish and functional awnings and drop blinds for residential and commercial spaces",
-      image: "/images/products/awnings/main.jpg",
-      images: [
-        "/images/products/awnings/main.jpg",
-        "/images/products/awnings/1.jpg",
-        "/images/products/awnings/2.jpg",
-        "/images/products/awnings/3.jpg",
-      ],
-      category: "Shade Solutions",
-      weight: "Medium",
-      seasonality: "All-Season",
-    },
-  ],
+  products = loadProducts() || defaultProducts,
 }: ProductShowcaseProps) => {
+  // Removed category filter state
   const controls = useAnimation();
   const ref = useRef(null);
   const inView = useInView(ref, {
@@ -139,24 +61,34 @@ const ProductShowcase = ({
 
   // Create a default translation function to avoid errors when not in a LanguageProvider
   const defaultT = (key: string) => {
-    const defaultTranslations = {
+    const defaultTranslations: Record<string, string> = {
       "products.title": "Premium Outdoor Tents",
       "products.subtitle":
         "Explore our range of high-quality tents for camping, events, and outdoor adventures",
-
       "products.viewDetails": "View Details",
       "products.requestQuote": "Request Quote",
+      "products.ourProducts": "Our Products",
+      "products.leadingManufacturer": "Leading manufacturer of PVC products",
+      "products.professionalGrade":
+        "Professional-grade tarpaulins, tents, and custom PVC products designed to withstand the african climate",
+      "product.photos": "photos",
     };
     return defaultTranslations[key] || key;
   };
 
   // Try to use the language context, fall back to default if not available
-  let t = defaultT;
+  let t: ((key: string) => string) | null = null;
   try {
     const languageContext = useLanguage();
-    t = languageContext.t;
+    if (languageContext && typeof languageContext.t === "function") {
+      t = languageContext.t;
+    } else {
+      t = defaultT;
+    }
   } catch (error) {
+    console.error("Error accessing language context:", error);
     // Use the default translation function if not in a LanguageProvider
+    t = defaultT;
   }
 
   useEffect(() => {
@@ -164,6 +96,18 @@ const ProductShowcase = ({
       controls.start("visible");
     }
   }, [controls, inView]);
+
+  // Extract unique categories from products
+  const categories = useMemo(() => {
+    if (!products) return [];
+    const categorySet = new Set(products.map((product) => product.category));
+    return Array.from(categorySet).sort();
+  }, [products]);
+
+  // Removed subcategory filter state and logic
+
+  // Using all products without filtering
+  const filteredProducts = products;
 
   const containerVariants = {
     hidden: { opacity: 0 },
@@ -190,20 +134,21 @@ const ProductShowcase = ({
 
   return (
     <section
-      className="w-full relative py-20 bg-gradient-to-br from-white via-gray-50 to-white dark:from-gray-900 dark:via-gray-800 dark:to-gray-900 rounded-xl overflow-hidden"
+      className="w-full relative py-24 bg-gradient-to-br from-white via-gray-50 to-white dark:from-gray-900 dark:via-gray-800 dark:to-gray-900 rounded-xl overflow-hidden"
       ref={ref}
+      id="products"
     >
       <div className="absolute inset-0 overflow-hidden">
-        <div className="absolute inset-0 bg-[#FFF8DC] "></div>
+        <div className="absolute inset-0 bg-gradient-to-r from-[#f8f9fa] to-[#e9ecef] dark:from-gray-900 dark:to-gray-800"></div>
 
         <BackgroundTrees count={15} opacity={0.03} />
         <div className="absolute -bottom-24 -right-24 w-96 h-96 bg-[#1b5e20]/5 dark:bg-green-500/10 rounded-full blur-3xl"></div>
         <div className="absolute -top-24 -left-24 w-96 h-96 bg-[#1b5e20]/5 dark:bg-green-500/10 rounded-full blur-3xl"></div>
       </div>
-      <div className="container bg-[#FFF8DC] mx-auto px-6 relative z-10">
+      <div className="container mx-auto px-8 relative z-10 bg-white/80 dark:bg-gray-900/80 backdrop-blur-md rounded-3xl shadow-lg border border-gray-200/50 dark:border-gray-700/50">
         <div className="text-center mb-16">
           <motion.div
-            className="inline-flex items-center mb-4 px-5 py-1.5 bg-white text-[#1b5e20]  rounded-full shadow-lg border border-[#1b5e20] backdrop-blur-sm"
+            className="inline-flex items-center mb-6 px-6 py-2 bg-white/90 dark:bg-gray-800/90 text-[#1b5e20] dark:text-green-400 rounded-full shadow-md border border-[#1b5e20]/10 dark:border-green-500/20 backdrop-blur-md"
             initial={{ opacity: 0, y: 20 }}
             animate={controls}
             variants={{
@@ -215,14 +160,14 @@ const ProductShowcase = ({
             }}
             whileHover={{ scale: 1.05, transition: { duration: 0.2 } }}
           >
-            <span className="font-medium text-sm uppercase tracking-wider flex items-center">
-              <span className="w-2 h-2 bg-[#1b5e20] rounded-full mr-2 animate-pulse"></span>
-              Our Products
+            <span className="font-semibold text-sm uppercase tracking-wider flex items-center">
+              <Sparkles className="w-5 h-5 mr-2 text-[#1b5e20] dark:text-green-400" />
+              {t ? t("products.ourProducts") : "Our Products"}
             </span>
           </motion.div>
 
           <motion.h2
-            className="text-4xl md:text-5xl font-bold mb-4 text-[#1b5e20] drop-shadow-sm"
+            className="text-4xl md:text-6xl font-bold mb-6 drop-shadow-sm"
             initial={{ opacity: 0, y: 20 }}
             animate={controls}
             variants={{
@@ -233,13 +178,15 @@ const ProductShowcase = ({
               },
             }}
           >
-            <span className="bg-clip-text text-transparent bg-gradient-to-r from-[#1b5e20] to-[#2e7d32] dark:from-green-500 dark:to-green-400">
-              Leading manufacturer of PVC products
+            <span className="bg-clip-text text-transparent bg-gradient-to-r from-[#1b5e20] via-[#2e7d32] to-[#388e3c] dark:from-green-500 dark:via-green-400 dark:to-green-300">
+              {t
+                ? t("products.leadingManufacturer")
+                : "Leading manufacturer of PVC products"}
             </span>
           </motion.h2>
 
           <motion.p
-            className="text-lg text-gray-600 dark:text-gray-300 max-w-3xl mx-auto"
+            className="text-xl text-gray-600 dark:text-gray-300 max-w-3xl mx-auto leading-relaxed font-light"
             initial={{ opacity: 0, y: 20 }}
             animate={controls}
             variants={{
@@ -250,10 +197,13 @@ const ProductShowcase = ({
               },
             }}
           >
-            Professional-grade tarpaulins, tents, and custom PVC products
-            designed to withstand the african climate
+            {t
+              ? t("products.professionalGrade")
+              : "Professional-grade tarpaulins, tents, and custom PVC products designed to withstand the African climate"}
           </motion.p>
         </div>
+
+        {/* Category and subcategory filters removed */}
 
         <motion.div
           className="w-full"
@@ -261,23 +211,12 @@ const ProductShowcase = ({
           initial="hidden"
           animate={controls}
         >
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 xl:gap-10">
-            {products.map((product, index) => (
-              <motion.div
-                key={product.id}
-                initial={{ opacity: 0, y: 50 }}
-                animate={controls}
-                variants={{
-                  visible: {
-                    opacity: 1,
-                    y: 0,
-                    transition: { duration: 0.5, delay: 0.1 * index },
-                  },
-                }}
-              >
-                <ProductCard product={product} variants={itemVariants} />
-              </motion.div>
-            ))}
+          <div className="relative">
+            <ProductCarousel
+              products={filteredProducts || []}
+              itemVariants={itemVariants}
+              controls={controls}
+            />
           </div>
         </motion.div>
 
@@ -293,11 +232,15 @@ const ProductShowcase = ({
             },
           }}
         >
-          <motion.div
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.98 }}
-            className="inline-block"
-          ></motion.div>
+          <Link to="/category/all">
+            <Button
+              className="bg-[#1b5e20] hover:bg-[#0d3d11] text-white px-10 py-6 rounded-lg shadow-lg hover:shadow-xl transition-all duration-300 text-lg font-medium border border-[#1b5e20]/10 group"
+              size="lg"
+            >
+              View All Products
+              <ArrowRight className="ml-3 h-6 w-6 group-hover:translate-x-1 transition-transform duration-300" />
+            </Button>
+          </Link>
         </motion.div>
       </div>
     </section>
@@ -314,14 +257,50 @@ const ProductCard = ({ product, variants }: ProductCardProps) => {
   const navigate = useNavigate();
   const controls = useAnimation();
 
+  // Create a default translation function to avoid errors when not in a LanguageProvider
+  const defaultT = (key: string) => {
+    const defaultTranslations: Record<string, string> = {
+      "products.viewDetails": "View Details",
+      "product.photos": "photos",
+    };
+    return defaultTranslations[key] || key;
+  };
+
+  // Try to use the language context, fall back to default if not available
+  let t: ((key: string) => string) | null = null;
+  try {
+    const languageContext = useLanguage();
+    if (languageContext && typeof languageContext.t === "function") {
+      t = languageContext.t;
+    } else {
+      t = defaultT;
+    }
+  } catch (error) {
+    console.error("Error accessing language context:", error);
+    // Use the default translation function if not in a LanguageProvider
+    t = defaultT;
+  }
+
   const handleProductClick = () => {
     navigate(`/product/${product.id}`);
+  };
+
+  const handleCategoryClick = (e: React.MouseEvent, category: string) => {
+    e.stopPropagation();
+    const categorySlug = category.toLowerCase().replace(/\s+/g, "-");
+    navigate(`/category/${categorySlug}`);
+  };
+
+  const handleSubcategoryClick = (e: React.MouseEvent, subcategory: string) => {
+    e.stopPropagation();
+    const subcategorySlug = subcategory.toLowerCase().replace(/\s+/g, "-");
+    navigate(`/type/${subcategorySlug}`);
   };
 
   return (
     <motion.div
       variants={variants}
-      className="group flex flex-col bg-gradient-to-b from-white to-gray-50 dark:from-gray-800 dark:to-gray-900 rounded-xl overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-300 h-full cursor-pointer border border-gray-100 dark:border-gray-700 hover:border-[#1b5e20] dark:hover:border-green-500"
+      className="group flex flex-col bg-white dark:bg-gray-800 rounded-xl overflow-hidden shadow-md hover:shadow-xl transition-all duration-300 h-full cursor-pointer border border-gray-200/60 dark:border-gray-700/60 hover:border-[#1b5e20]/60 dark:hover:border-green-500/60"
       onMouseEnter={() => {
         setIsHovered(true);
         controls.start("hover");
@@ -331,15 +310,23 @@ const ProductCard = ({ product, variants }: ProductCardProps) => {
         controls.start("initial");
       }}
       onClick={handleProductClick}
-      whileHover={{ y: -5 }}
+      whileHover={{ y: -5, scale: 1.01 }}
       initial="initial"
       animate={controls}
     >
-      <div className="relative overflow-hidden h-[280px] group-hover:h-[300px] transition-all duration-500">
-        <div className="absolute top-0 left-0 w-full h-full bg-gradient-to-t from-black/70 to-transparent z-10 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex"></div>
+      <div className="relative overflow-hidden h-[280px]">
+        <div className="absolute top-0 left-0 w-full h-full bg-gradient-to-t from-black/60 to-transparent z-10 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex"></div>
+
+        {/* Featured badge if it's a popular product */}
+        {product.id === 1 || product.id === 4 ? (
+          <div className="absolute top-4 left-4 z-20 bg-[#1b5e20] text-white px-3 py-1 rounded-md text-xs font-medium shadow-md flex items-center">
+            <Sparkles className="h-3 w-3 mr-1" />
+            Featured
+          </div>
+        ) : null}
 
         <motion.div
-          className="absolute top-3 right-3 z-20 bg-white/90 dark:bg-gray-800/90 rounded-full p-2 shadow-md opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+          className="absolute top-4 right-4 z-20 bg-white/90 dark:bg-gray-800/90 rounded-full p-2 shadow-md opacity-0 group-hover:opacity-100 transition-opacity duration-300"
           initial={{ scale: 0.8, opacity: 0 }}
           whileHover={{ scale: 1.1 }}
           variants={{
@@ -353,13 +340,14 @@ const ProductCard = ({ product, variants }: ProductCardProps) => {
         <img
           src={product.image}
           alt={product.name}
-          className="w-full h-full object-cover transition-all duration-700 ease-in-out group-hover:scale-110"
+          className="w-full h-full object-cover transition-all duration-500 ease-in-out group-hover:scale-105"
           onError={(e) => {
             console.error(
-              `Failed to load product image: ${e.currentTarget.src}`
+              `Failed to load product image: ${e.currentTarget.src}`,
             );
             // Use a placeholder image
-            e.currentTarget.src = "/images/products/placeholder.jpg";
+            e.currentTarget.src =
+              "https://images.unsplash.com/photo-1579546929518-9e396f3cc809?w=800&q=80";
           }}
         />
 
@@ -371,32 +359,29 @@ const ProductCard = ({ product, variants }: ProductCardProps) => {
           }}
         >
           <div className="flex flex-wrap gap-2">
-            <span className="px-3 py-1 bg-white/90 dark:bg-gray-800/90 text-[#1b5e20] dark:text-green-400 rounded-full text-xs font-medium border border-[#1b5e20]/20 dark:border-green-500/20 shadow-sm">
+            <span
+              className="px-3 py-1 bg-white/90 dark:bg-gray-800/90 text-[#1b5e20] dark:text-green-400 rounded-md text-xs font-medium border-0 shadow-sm cursor-pointer hover:bg-[#1b5e20] hover:text-white transition-colors duration-300 flex items-center"
+              onClick={(e) => handleCategoryClick(e, product.category)}
+            >
+              <Tag className="h-3 w-3 mr-1" />
               {product.category}
             </span>
             {product.weight && (
-              <span className="px-3 py-1 bg-white/90 dark:bg-gray-800/90 text-[#1b5e20] dark:text-green-400 rounded-full text-xs font-medium border border-[#1b5e20]/20 dark:border-green-500/20 shadow-sm">
+              <span className="px-3 py-1 bg-white/90 dark:bg-gray-800/90 text-[#1b5e20] dark:text-green-400 rounded-md text-xs font-medium border-0 shadow-sm flex items-center">
+                <ShieldCheck className="h-3 w-3 mr-1" />
                 {product.weight}
               </span>
             )}
           </div>
         </motion.div>
       </div>
-      <div className="p-6 bg-[#FFF8DC] flex flex-col flex-grow relative">
-        <motion.div
-          className="absolute -top-6 left-0 bg-[#FFF8DC] right-0 h-12 bg-gradient-to-b from-transparent to-white dark:to-gray-800 z-10"
-          variants={{
-            initial: { opacity: 0 },
-            hover: { opacity: 1 },
-          }}
-        />
-
+      <div className="p-5 bg-white dark:bg-gray-800 flex flex-col flex-grow relative">
         <div className="mb-3 flex justify-between items-start">
-          <h3 className="text-xl font-bold text-green-800 dark:text-white font-sans tracking-tight leading-tight group-hover:text-[#1b5e20] dark:group-hover:text-green-400 transition-colors duration-300">
+          <h3 className="text-lg font-semibold text-gray-900 dark:text-white font-sans tracking-tight leading-tight group-hover:text-[#1b5e20] dark:group-hover:text-green-400 transition-colors duration-300">
             {product.name}
           </h3>
           <motion.div
-            className="bg-[#1b5e20]/10 dark:bg-green-500/20 p-1.5 rounded-full"
+            className="bg-[#1b5e20]/5 dark:bg-green-500/10 p-1.5 rounded-full"
             whileHover={{ rotate: 15, scale: 1.1 }}
             variants={{
               initial: { scale: 0.9, opacity: 0.5 },
@@ -407,44 +392,140 @@ const ProductCard = ({ product, variants }: ProductCardProps) => {
           </motion.div>
         </div>
 
-        <div className="relative min-h-[100px]">
-          <p className="text-gray-800 dark:text-gray-200 text-sm mb-4 line-clamp-3 font-sans leading-relaxed group-hover:opacity-0 transition-opacity duration-200">
+        <div className="relative min-h-[60px]">
+          <p className="text-gray-600 dark:text-gray-300 text-sm mb-4 line-clamp-2 font-sans leading-relaxed">
             {product.description}
           </p>
-          <motion.div
-            className="absolute inset-0 bg-[#FFF8DC] dark:bg-gray-800/95 backdrop-blur-sm p-3 rounded-lg opacity-0 group-hover:opacity-100 transition-opacity duration-300 overflow-y-auto max-h-[150px] z-20 shadow-lg border border-gray-100 dark:border-gray-700"
-            variants={{
-              initial: { y: 20, opacity: 0 },
-              hover: { y: 0, opacity: 1, transition: { delay: 0.2 } },
-            }}
-          >
-            <p className="text-gray-900 dark:text-gray-100 text-sm leading-relaxed">
-              {product.description}
-            </p>
-          </motion.div>
         </div>
 
+        {/* Subcategories */}
+        {product.subcategories && product.subcategories.length > 0 && (
+          <div className="mb-4">
+            <div className="flex flex-wrap gap-1.5 mt-1">
+              {product.subcategories.slice(0, 3).map((subcategory, index) => (
+                <span
+                  key={index}
+                  className="px-2 py-1 bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 rounded-md text-xs font-medium cursor-pointer hover:bg-[#1b5e20]/10 hover:text-[#1b5e20] dark:hover:bg-green-900/30 dark:hover:text-green-400 transition-colors duration-300 flex items-center"
+                  onClick={(e) => handleSubcategoryClick(e, subcategory)}
+                >
+                  {subcategory}
+                </span>
+              ))}
+              {product.subcategories.length > 3 && (
+                <span className="px-2 py-1 bg-gray-100 dark:bg-gray-700 text-gray-500 dark:text-gray-400 rounded-md text-xs font-medium">
+                  +{product.subcategories.length - 3} more
+                </span>
+              )}
+            </div>
+          </div>
+        )}
+
         <motion.div
-          className="mt-auto pt-4 border-t border-gray-200 dark:border-gray-700 flex justify-between items-center"
+          className="mt-auto pt-3 border-t border-gray-200/70 dark:border-gray-700/70 flex justify-between items-center"
           variants={{
             initial: { opacity: 0.7 },
             hover: { opacity: 1 },
           }}
         >
-          <span className="text-xs text-gray-700 dark:text-gray-300 flex items-center font-medium">
-            <ImageIcon className="h-3 w-3 mr-1" />
-            {product.images?.length || 1} photos
+          <span className="text-xs text-gray-500 dark:text-gray-400 flex items-center font-medium">
+            <ImageIcon className="h-3.5 w-3.5 mr-1" />
+            {product.images?.length || 1} {t ? t("product.photos") : "photos"}
           </span>
-          <motion.span
-            className="text-sm text-[#1b5e20] dark:text-green-400 font-medium flex items-center bg-[#1b5e20]/5 dark:bg-green-500/10 px-3 py-1.5 rounded-full"
-            whileHover={{ x: 3 }}
+          <motion.div
+            className="text-xs text-[#1b5e20] dark:text-green-400 font-medium flex items-center bg-[#1b5e20]/5 dark:bg-green-500/10 px-3 py-1.5 rounded-md"
+            whileHover={{ x: 2, backgroundColor: "rgba(27, 94, 32, 0.1)" }}
           >
-            View Details
+            {t ? t("products.viewDetails") : "View Details"}
             <ArrowRight className="h-3.5 w-3.5 ml-1 group-hover:translate-x-1 transition-transform duration-300" />
-          </motion.span>
+          </motion.div>
         </motion.div>
       </div>
     </motion.div>
+  );
+};
+
+interface ProductCarouselProps {
+  products: Product[];
+  itemVariants: any;
+  controls: any;
+}
+
+const ProductCarousel = ({
+  products,
+  itemVariants,
+  controls,
+}: ProductCarouselProps) => {
+  const [emblaRef, emblaApi] = useEmblaCarousel({
+    loop: true,
+    align: "start",
+    slidesToScroll: 1,
+  });
+  const [canScrollPrev, setCanScrollPrev] = useState(false);
+  const [canScrollNext, setCanScrollNext] = useState(true);
+
+  const scrollPrev = () => emblaApi && emblaApi.scrollPrev();
+  const scrollNext = () => emblaApi && emblaApi.scrollNext();
+
+  const onSelect = useCallback(() => {
+    if (!emblaApi) return;
+    setCanScrollPrev(emblaApi.canScrollPrev());
+    setCanScrollNext(emblaApi.canScrollNext());
+  }, [emblaApi]);
+
+  useEffect(() => {
+    if (!emblaApi) return;
+    onSelect();
+    emblaApi.on("select", onSelect);
+    emblaApi.on("reInit", onSelect);
+    return () => {
+      emblaApi.off("select", onSelect);
+      emblaApi.off("reInit", onSelect);
+    };
+  }, [emblaApi, onSelect]);
+
+  return (
+    <div className="relative">
+      <div className="overflow-hidden" ref={emblaRef}>
+        <div className="flex gap-6">
+          {products.map((product, index) => (
+            <div
+              className="flex-[0_0_100%] min-w-0 sm:flex-[0_0_50%] lg:flex-[0_0_33.333%]"
+              key={product.id}
+            >
+              <motion.div
+                initial={{ opacity: 0, y: 50 }}
+                animate={controls}
+                variants={{
+                  visible: {
+                    opacity: 1,
+                    y: 0,
+                    transition: { duration: 0.5, delay: 0.1 * index },
+                  },
+                }}
+              >
+                <ProductCard product={product} variants={itemVariants} />
+              </motion.div>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      <button
+        onClick={scrollPrev}
+        className={`absolute left-0 top-1/2 -translate-y-1/2 -translate-x-3 bg-white/90 dark:bg-gray-800/90 p-3 rounded-lg shadow-md z-10 transition-all duration-300 border border-gray-200/60 dark:border-gray-700/60 ${!canScrollPrev ? "opacity-50 cursor-not-allowed" : "hover:bg-[#1b5e20] hover:text-white"}`}
+        disabled={!canScrollPrev}
+      >
+        <ChevronLeft className="h-5 w-5" />
+      </button>
+
+      <button
+        onClick={scrollNext}
+        className={`absolute right-0 top-1/2 -translate-y-1/2 translate-x-3 bg-white/90 dark:bg-gray-800/90 p-3 rounded-lg shadow-md z-10 transition-all duration-300 border border-gray-200/60 dark:border-gray-700/60 ${!canScrollNext ? "opacity-50 cursor-not-allowed" : "hover:bg-[#1b5e20] hover:text-white"}`}
+        disabled={!canScrollNext}
+      >
+        <ChevronRight className="h-5 w-5" />
+      </button>
+    </div>
   );
 };
 

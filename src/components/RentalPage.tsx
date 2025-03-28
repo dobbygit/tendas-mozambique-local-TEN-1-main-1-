@@ -48,6 +48,7 @@ const RentalPageContent = () => {
   const [rentalItems, setRentalItems] = useState<RentalItem[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState("");
+  const [selectedRentalItem, setSelectedRentalItem] = useState<string>("");
 
   // Create a default translation function to avoid errors when not in a LanguageProvider
   const defaultT = (key: string) => {
@@ -97,7 +98,8 @@ const RentalPageContent = () => {
     loadRentalItems();
   }, []);
 
-  const filteredItems = rentalItems.filter((item) => item.category === "tents");
+  // No need to filter by category since we're only showing the two specific tents
+  const filteredItems = rentalItems;
 
   return (
     <div className="min-h-screen bg-[#F5F5F5] dark:bg-gray-900 transition-colors duration-300">
@@ -212,37 +214,52 @@ const RentalPageContent = () => {
           {/* Rental Items Grid */}
           {!isLoading && rentalItems.length > 0 && (
             <div className="max-w-4xl mx-auto">
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-10">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-12 px-4">
                 {filteredItems.map((item) => (
                   <motion.div
                     key={item.id}
-                    className="bg-white dark:bg-gray-800 rounded-lg overflow-hidden shadow-lg hover:shadow-xl transition-all duration-300 flex flex-col h-full"
+                    className="bg-white dark:bg-gray-800 rounded-xl overflow-hidden shadow-2xl hover:shadow-2xl transition-all duration-300 flex flex-col h-full border border-green-100 dark:border-green-900"
                     initial={{ opacity: 0, y: 20 }}
                     whileInView={{ opacity: 1, y: 0 }}
                     viewport={{ once: true }}
                     transition={{ duration: 0.5 }}
-                    whileHover={{ y: -5 }}
+                    whileHover={{ y: -8, scale: 1.02 }}
                   >
-                    <div className="h-64 overflow-hidden">
+                    <div className="relative h-72 overflow-hidden">
+                      <div className="absolute top-4 right-4 z-10 bg-green-600 text-white px-3 py-1 rounded-full text-sm font-medium shadow-md">
+                        {item.category}
+                      </div>
                       <img
                         src={item.image}
                         alt={item.name}
                         className="w-full h-full object-cover transition-transform duration-500 hover:scale-110"
                       />
+                      <div className="absolute inset-0 bg-gradient-to-t from-black/30 to-transparent opacity-0 hover:opacity-100 transition-opacity duration-300"></div>
                     </div>
-                    <div className="p-6 flex-grow bg-[#FFF8DC] flex flex-col ">
-                      <h3 className="text-2xl font-bold mb-3 text-gray-800 dark:text-gray-200">
+                    <div className="p-8 flex-grow bg-[#FFF8DC] flex flex-col">
+                      <h3 className="text-2xl font-bold text-green-800 dark:text-green-300 font-sans tracking-tight leading-tight transition-colors duration-300 mb-3">
                         {item.name}
                       </h3>
-                      <p className="text-gray-600 dark:text-gray-300 mb-6 flex-grow">
+                      <div className="flex items-center mb-4 text-green-700 dark:text-green-400">
+                        <Tent className="h-5 w-5 mr-2" />
+                        <span className="text-sm font-medium">
+                          {item.category.charAt(0).toUpperCase() +
+                            item.category.slice(1)}
+                        </span>
+                      </div>
+                      <p className="text-gray-800 dark:text-gray-200 text-base mb-6 font-sans leading-relaxed flex-grow">
                         {item.description}
                       </p>
 
                       <motion.button
-                        className="w-full bg-[#1b5e20] hover:bg-[#2e7d32] text-white py-3 rounded-md transition-colors duration-300 flex items-center justify-center text-lg"
+                        className="w-full bg-[#1b5e20] hover:bg-[#2e7d32] text-white py-4 rounded-lg transition-colors duration-300 flex items-center justify-center text-lg font-medium shadow-md hover:shadow-lg"
                         whileHover={{ scale: 1.02 }}
                         whileTap={{ scale: 0.98 }}
                         onClick={() => {
+                          // Set the selected rental type
+                          setActiveCategory(item.category);
+                          setSelectedRentalItem(item.name);
+
                           const rentalSection =
                             document.getElementById("rental-form");
                           if (rentalSection) {
@@ -269,9 +286,12 @@ const RentalPageContent = () => {
               </div>
             </div>
           )}
-          s{/* Rental Request Form */}
+          {/* Rental Request Form */}
           <section id="rental-form" className="mb-16">
-            <RentalRequestSection className="shadow-xl" />
+            <RentalRequestSection
+              className="shadow-xl"
+              selectedRentalType={selectedRentalItem}
+            />
           </section>
           {/* FAQ Section */}
           <section className="mb-16"></section>

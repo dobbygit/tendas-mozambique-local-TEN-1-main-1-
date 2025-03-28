@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import { Button } from "./ui/button";
 import { submitRentalRequest } from "../lib/api";
@@ -8,16 +8,25 @@ import BackgroundTrees from "./BackgroundTrees";
 interface RentalRequestSectionProps {
   className?: string;
   backgroundImage?: string;
+  selectedRentalType?: string;
 }
 
 const RentalRequestSection: React.FC<RentalRequestSectionProps> = ({
   className = "",
   backgroundImage = "https://images.unsplash.com/photo-1658509942695-ba0fe6453ffb?q=80&w=2043&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+  selectedRentalType = "",
 }) => {
-  const [rentalType, setRentalType] = useState("");
+  const [rentalType, setRentalType] = useState(selectedRentalType);
   const [duration, setDuration] = useState("");
   const [phoneNumber, setPhoneNumber] = useState("");
   const [submitted, setSubmitted] = useState(false);
+
+  // Update rental type when selectedRentalType prop changes
+  useEffect(() => {
+    if (selectedRentalType) {
+      setRentalType(selectedRentalType);
+    }
+  }, [selectedRentalType]);
 
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [error, setError] = useState("");
@@ -77,7 +86,6 @@ const RentalRequestSection: React.FC<RentalRequestSectionProps> = ({
         <div className="absolute inset-0 bg-gradient-to-r from-[#1b5e20]/90 to-black/70" />
         <BackgroundTrees count={8} opacity={0.07} />
       </div>
-
       {/* Content */}
       <div className="relative z-10 container mx-auto px-4 py-16">
         <div className="flex flex-col items-center max-w-6xl mx-auto mb-10">
@@ -134,25 +142,6 @@ const RentalRequestSection: React.FC<RentalRequestSectionProps> = ({
                 </li>
               </ul>
             </div>
-
-            <motion.a
-              href="#"
-              onClick={(e) => {
-                e.preventDefault();
-                if (window.location.pathname !== "/rental") {
-                  window.location.href = "/rental";
-                }
-              }}
-              className="bg-white text-[#1b5e20] font-semibold py-4 px-8 rounded-md text-center inline-block shadow-lg"
-              whileHover={{
-                scale: 1.03,
-                boxShadow:
-                  "0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04)",
-              }}
-              whileTap={{ scale: 0.98 }}
-            >
-              View Full Rental Catalog
-            </motion.a>
           </motion.div>
 
           {/* Form fields */}
@@ -218,14 +207,14 @@ const RentalRequestSection: React.FC<RentalRequestSectionProps> = ({
                         Select equipment type
                       </option>
                       <option
-                        value="18x9 Marquee tent"
+                        value="18x9 200man Marquee tent"
                         className="text-gray-700"
                       >
-                        18x9 Marquee Tent
+                        18x9 200man Marquee Tent
                       </option>
 
-                      <option value="shade port" className="text-gray-700">
-                        Shade Port
+                      <option value="5x5 event tents" className="text-gray-700">
+                        5x5 event tents
                       </option>
                     </select>
                   </div>

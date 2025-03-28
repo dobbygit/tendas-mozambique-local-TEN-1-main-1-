@@ -107,7 +107,7 @@ const WhyUsContent = () => {
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.5, delay: 0.2 }}
                 >
-                  Explore Our Products
+                  {t("whyUs.exploreOurProducts")}
                   <ArrowRight className="ml-2 h-5 w-5" />
                 </motion.button>
               </Link>
@@ -205,41 +205,36 @@ const WhyUsContent = () => {
                     icon: (
                       <Award className="h-10 w-10 text-[#1b5e20] dark:text-green-400" />
                     ),
-                    title: "Premium Quality Materials",
-                    description:
-                      "We use only the highest quality materials that are proven to withstand the harsh African sun and weather conditions.",
+                    title: t("whyUs.premiumQualityMaterials"),
+                    description: t("whyUs.premiumQualityMaterialsDesc"),
                   },
                   {
                     icon: (
                       <Wrench className="h-10 w-10 text-[#1b5e20] dark:text-green-400" />
                     ),
-                    title: "Custom Solutions",
-                    description:
-                      "From the smallest dome tent to the largest warehouse tent, we create custom solutions tailored to your specific needs.",
+                    title: t("whyUs.customSolutions"),
+                    description: t("whyUs.customSolutionsDesc"),
                   },
                   {
                     icon: (
                       <Users className="h-10 w-10 text-[#1b5e20] dark:text-green-400" />
                     ),
-                    title: "Expert Staff",
-                    description:
-                      "Our team of experts will guide you through our range and help you find the perfect solution for your requirements.",
+                    title: t("whyUs.expertStaff"),
+                    description: t("whyUs.expertStaffDesc"),
                   },
                   {
                     icon: (
                       <MapPin className="h-10 w-10 text-[#1b5e20] dark:text-green-400" />
                     ),
-                    title: "On-Site Services",
-                    description:
-                      "We can come on site to advise on a new camp or to repair an existing tent, providing comprehensive support.",
+                    title: t("whyUs.onSiteServices"),
+                    description: t("whyUs.onSiteServicesDesc"),
                   },
                   {
                     icon: (
                       <CheckCircle className="h-10 w-10 text-[#1b5e20] dark:text-green-400" />
                     ),
-                    title: "Trusted by Professionals",
-                    description:
-                      "We are suppliers to many heavy-duty users such as safari camps, construction camps, the military, and the police.",
+                    title: t("whyUs.trustedByProfessionals"),
+                    description: t("whyUs.trustedByProfessionalsDesc"),
                   },
                   {
                     icon: (
@@ -260,9 +255,8 @@ const WhyUsContent = () => {
                         </svg>
                       </div>
                     ),
-                    title: "Wide Color Range",
-                    description:
-                      "We offer a wide range of colors in materials that are proven to stand up to the Moçambique sun.",
+                    title: t("whyUs.wideColorRange"),
+                    description: t("whyUs.wideColorRangeDesc"),
                   },
                 ].map((feature, index) => (
                   <motion.div

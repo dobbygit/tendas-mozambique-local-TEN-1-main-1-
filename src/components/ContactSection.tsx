@@ -58,7 +58,7 @@ const ContactSection: React.FC<ContactSectionProps> = ({
   const [isSubmitted, setIsSubmitted] = useState(false);
 
   const handleInputChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
   ) => {
     const { name, value } = e.target;
     setFormState((prev) => ({
@@ -220,7 +220,7 @@ const ContactSection: React.FC<ContactSectionProps> = ({
                       name="name"
                       value={formState.name}
                       onChange={handleInputChange}
-                      placeholder="Your name"
+                      placeholder={t("contact.yourName")}
                       required
                       className="w-full border-slate-300 dark:border-slate-600 focus:ring-primary focus:border-primary transition-all duration-300"
                     />
@@ -246,7 +246,7 @@ const ContactSection: React.FC<ContactSectionProps> = ({
                       type="email"
                       value={formState.email}
                       onChange={handleInputChange}
-                      placeholder="Your email address"
+                      placeholder={t("contact.yourEmail")}
                       required
                       className="w-full border-slate-300 dark:border-slate-600 focus:ring-primary focus:border-primary transition-all duration-300"
                     />
@@ -271,7 +271,7 @@ const ContactSection: React.FC<ContactSectionProps> = ({
                       name="message"
                       value={formState.message}
                       onChange={handleInputChange}
-                      placeholder="Your message"
+                      placeholder={t("contact.yourMessage")}
                       required
                       rows={5}
                       className="w-full border-slate-300 dark:border-slate-600 focus:ring-primary focus:border-primary transition-all duration-300"

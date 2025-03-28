@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from "react";
-import { Moon, Sun, Menu, X } from "lucide-react";
+import React, { useState, useEffect, useRef } from "react";
+import { Moon, Sun, Menu, X, ChevronDown } from "lucide-react";
 import { Button } from "./ui/button";
 import { motion, AnimatePresence } from "framer-motion";
 import LanguageSelector from "./LanguageSelector";
@@ -15,16 +15,43 @@ const Header = ({
   isDarkMode = false,
 }: HeaderProps) => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [isProductsDropdownOpen, setIsProductsDropdownOpen] = useState(false);
+  const productsDropdownRef = useRef<HTMLDivElement>(null);
 
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen);
   };
 
+  const toggleProductsDropdown = () => {
+    setIsProductsDropdownOpen(!isProductsDropdownOpen);
+  };
+
+  const closeProductsDropdown = () => {
+    setIsProductsDropdownOpen(false);
+  };
+
+  // Close dropdown when clicking outside
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (
+        productsDropdownRef.current &&
+        !productsDropdownRef.current.contains(event.target as Node)
+      ) {
+        setIsProductsDropdownOpen(false);
+      }
+    };
+
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, []);
+
   // Create a default translation function to avoid errors when not in a LanguageProvider
   const defaultT = (key: string) => {
     const defaultTranslations = {
       "nav.home": "Home",
-      "nav.tents": "Tents",
+      "nav.tents": "Products",
       rental: "Rental",
       "nav.whyUs": "Why Us",
       "nav.contact": "Contact",
@@ -46,9 +73,35 @@ const Header = ({
 
   const isHomePage = currentPath === "/";
 
+  const productCategories = {
+    Tarpaulins: [
+      "18m x 9m cargo Tarpaulins",
+      "18m x 8m cargo Tarpaulins",
+      "Custom Tarpaulins",
+      "Warehouse tarpaulins",
+    ],
+    "Vehicle Covers": ["Bakkie covers", "Vehicle covers", "Seat covers"],
+    "Txopela Accessories": ["Txopela doors", "Txopela roof's"],
+    Tents: [
+      "Security guard tents",
+      "5m x 5m kitchen tent",
+      "3m x 6m frame tent",
+      "Custom frame tent",
+      "5m x 2.5m 4man dome tent",
+      "3m x 3m 6man dome tent",
+    ],
+    Gazebos: [
+      "3m x 3m gazebo (with or without walls)",
+      "Custom gazebo (with or without walls)",
+    ],
+    "Shade Ports": ["Car shade ports"],
+    "Custom Work": ["All Custom work"],
+  };
+
   const navLinks = [
     { name: t("nav.home"), href: "#", id: "hero" },
-    { name: t("nav.tents"), href: "#products", id: "products" },
+    { name: "Products", href: "/products", id: "products" },
+
     {
       name: "Rentals",
       href: "/rental",
@@ -105,39 +158,37 @@ const Header = ({
         {/* Desktop Navigation */}
         <nav className="hidden md:flex items-center space-x-8">
           {navLinks.map((link, index) => (
-            <motion.a
-              key={link.name}
-              href={
-                isHomePage
-                  ? link.href
-                  : link.href.startsWith("#")
-                  ? `/${link.href}`
-                  : link.href
-              }
-              onClick={(e) => {
-                e.preventDefault();
-                if (link.onClick) {
-                  link.onClick(e);
-                } else {
-                  if (isHomePage) {
-                    const element = document.getElementById(link.id);
-                    if (element) {
-                      element.scrollIntoView({ behavior: "smooth" });
-                    }
+            <div key={link.name} className="relative">
+              <motion.div
+                className="flex items-center text-[#A9A9A9] font-medium transition-colors duration-200 cursor-pointer"
+                initial={{ opacity: 0, y: -20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.5, delay: index * 0.1 }}
+                onClick={(e) => {
+                  if (link.onClick) {
+                    e.preventDefault();
+                    link.onClick(e as any);
+                  } else if (link.id === "products") {
+                    e.preventDefault();
+                    window.location.href = "/products";
                   } else {
-                    window.location.href = isHomePage
-                      ? link.href
-                      : `/${link.href}`;
+                    e.preventDefault();
+                    if (isHomePage) {
+                      const element = document.getElementById(link.id);
+                      if (element) {
+                        element.scrollIntoView({ behavior: "smooth" });
+                      }
+                    } else {
+                      window.location.href = isHomePage
+                        ? link.href
+                        : `/${link.href}`;
+                    }
                   }
-                }
-              }}
-              initial={{ opacity: 0, y: -20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5, delay: index * 0.1 }}
-              className="text-[#A9A9A9] font-medium transition-colors duration-200 cursor-pointer"
-            >
-              {link.name}
-            </motion.a>
+                }}
+              >
+                {link.name}
+              </motion.div>
+            </div>
           ))}
         </nav>
 
@@ -174,41 +225,41 @@ const Header = ({
           >
             <div className="container mx-auto py-4 px-4 flex flex-col space-y-4">
               {navLinks.map((link) => (
-                <a
-                  key={link.name}
-                  href={
-                    isHomePage
-                      ? link.href
-                      : link.href.startsWith("#")
-                      ? `/${link.href}`
-                      : link.href
-                  }
-                  className="text-gray-700 dark:text-gray-200 hover:text-[#1b5e20] dark:hover:text-[#4caf50] py-2 font-medium transition-colors duration-200 cursor-pointer"
-                  onClick={(e) => {
-                    e.preventDefault();
-                    setIsMenuOpen(false);
-                    if (link.onClick) {
-                      link.onClick(e);
-                    } else {
-                      if (!isHomePage) {
-                        window.location.href = isHomePage
-                          ? link.href
-                          : `/${link.href}`;
+                <div key={link.name}>
+                  <div
+                    className="flex items-center justify-between text-gray-700 dark:text-gray-200 hover:text-[#1b5e20] dark:hover:text-[#4caf50] py-2 font-medium transition-colors duration-200 cursor-pointer"
+                    onClick={(e) => {
+                      if (link.onClick) {
+                        e.preventDefault();
+                        setIsMenuOpen(false);
+                        link.onClick(e as any);
+                      } else if (link.id === "products") {
+                        e.preventDefault();
+                        setIsMenuOpen(false);
+                        window.location.href = "/products";
                       } else {
-                        window.location.href = isHomePage
-                          ? link.href
-                          : `/${link.href}`;
-                      }
+                        e.preventDefault();
+                        setIsMenuOpen(false);
+                        if (!isHomePage) {
+                          window.location.href = isHomePage
+                            ? link.href
+                            : `/${link.href}`;
+                        } else {
+                          window.location.href = isHomePage
+                            ? link.href
+                            : `/${link.href}`;
+                        }
 
-                      const element = document.getElementById(link.id);
-                      if (element) {
-                        element.scrollIntoView({ behavior: "smooth" });
+                        const element = document.getElementById(link.id);
+                        if (element) {
+                          element.scrollIntoView({ behavior: "smooth" });
+                        }
                       }
-                    }
-                  }}
-                >
-                  {link.name}
-                </a>
+                    }}
+                  >
+                    {link.name}
+                  </div>
+                </div>
               ))}
             </div>
           </motion.div>
