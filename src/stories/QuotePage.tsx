@@ -5,7 +5,7 @@ import Header from "./Header";
 import Footer from "./Footer";
 import { ThemeProvider, useTheme } from "./ThemeProvider";
 import { LanguageProvider } from "./LanguageContext";
-import ClickSound from "./ClickSound";
+import ClickSound from "../components/ClickSound";
 import WhatsAppChat from "./WhatsAppChat";
 
 const QuotePage = () => {

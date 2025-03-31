@@ -17,32 +17,33 @@ interface StatisticsSectionProps {
 }
 
 const StatisticsSection = ({
-  title = "Why Choose Our Tents",
-  description = "We've been crafting premium outdoor tents for over 15 years, delivering quality and reliability.",
+  title = "Why Choose Our Products",
+  description = "We've been crafting premium outdoor Products for over 21 years, delivering quality and reliablity.",
   stats = [],
   backgroundColor = "bg-slate-50 dark:bg-slate-900",
 }: StatisticsSectionProps) => {
   // Create a default translation function to avoid errors when not in a LanguageProvider
-  const defaultT = (key: string) => {
-    const defaultTranslations = {
-      "stats.title": "Why Choose Our Tents",
-      "stats.description":
-        "We've been crafting premium outdoor tents for over 15 years, delivering quality and reliability.",
-      "stats.tentsSold": "Tents Sold",
-      "stats.yearsExperience": "Years Experience",
-      "stats.tentModels": "Tent Models",
-      "stats.satisfactionRate": "Satisfaction Rate",
-    };
-    return defaultTranslations[key] || key;
+  const defaultTranslations = {
+    "stats.title": "Why Choose Our Products",
+    "stats.description":
+      "We've been crafting premium outdoor Products for over 21 years, delivering quality and reliablity.",
+    "stats.tentsSold": "Tents Sold",
+    "stats.yearsExperience": "Years Experience",
+    "stats.tentModels": "Tent Models",
+    "stats.satisfactionRate": "Satisfaction Rate",
   };
 
+  // Define t function before using it
+  const defaultT = (key: string) => defaultTranslations[key] || key;
+
   // Try to use the language context, fall back to default if not available
-  let t = defaultT;
+  let t;
   try {
     const languageContext = useLanguage();
     t = languageContext.t;
   } catch (error) {
     // Use the default translation function if not in a LanguageProvider
+    t = defaultT;
   }
 
   const localizedStats = [
