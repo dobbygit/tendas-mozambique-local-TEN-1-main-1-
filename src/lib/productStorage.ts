@@ -67,10 +67,10 @@ export const defaultProducts: Product[] = [
     name: "Txopela Door Covers",
     description:
       "Specialized door covers for Txopela vehicles. Our products are designed to enhance functionality and provide protection for your Txopela doors.",
-    image:
-      "https://images.unsplash.com/photo-1581291518633-83b4ebd1d83e?w=800&q=80",
+    image: "/images/products/txopela-accessories/main.jpg",
     images: [
-      "https://images.unsplash.com/photo-1581291518633-83b4ebd1d83e?w=800&q=80",
+      "/images/products/txopela-accessories/main.jpg",
+      "/images/products/txopela-accessories/1.jpg",
       "https://images.unsplash.com/photo-1494976388531-d1058494cdd8?w=800&q=80",
     ],
     category: "Txopela Accessories",
@@ -99,10 +99,10 @@ export const defaultProducts: Product[] = [
     name: "Drop Blinds",
     description:
       "Custom drop blinds for patios, verandas, and outdoor spaces. Control light, privacy, and temperature with our high-quality drop blinds.",
-    image:
-      "https://images.unsplash.com/photo-1470753323753-3f8091bb0232?w=800&q=80",
+    image: "/images/products/blinds/main.jpg",
     images: [
-      "https://images.unsplash.com/photo-1470753323753-3f8091bb0232?w=800&q=80",
+      "/images/products/blinds/main.jpg",
+      "/images/products/blinds/1.jpg",
       "https://images.unsplash.com/photo-1533603208986-24fd819e718a?w=800&q=80",
     ],
     category: "Blinds",
@@ -132,10 +132,10 @@ export const defaultProducts: Product[] = [
     name: "3m x 3m 6-Man Dome Tent",
     description:
       "Spacious 3m x 3m dome tent ideal for larger groups. Comfortably accommodates 6 people with durable materials and weather-resistant design.",
-    image:
-      "https://images.unsplash.com/photo-1478131143081-80f7f84ca84d?w=800&q=80",
+    image: "/images/products/tents/2.jpg",
     images: [
-      "https://images.unsplash.com/photo-1478131143081-80f7f84ca84d?w=800&q=80",
+      "/images/products/tents/2.jpg",
+      "/images/products/tents/1.jpg",
       "https://images.unsplash.com/photo-1504280390367-361c6d9f38f4?w=800&q=80",
     ],
     category: "Tents",
@@ -149,10 +149,10 @@ export const defaultProducts: Product[] = [
     name: "Seat Covers",
     description:
       "Premium seat covers for vehicles of all types. Protect your car's interior with our durable and stylish seat covers that are easy to install and clean.",
-    image:
-      "https://images.unsplash.com/photo-1549317661-bd32c8ce0db2?w=800&q=80",
+    image: "/images/products/vehicle-covers/3.jpg",
     images: [
-      "https://images.unsplash.com/photo-1549317661-bd32c8ce0db2?w=800&q=80",
+      "/images/products/vehicle-covers/3.jpg",
+      "/images/products/vehicle-covers/1.jpg",
       "https://images.unsplash.com/photo-1533473359331-0135ef1b58bf?w=800&q=80",
     ],
     category: "Vehicle Covers",
