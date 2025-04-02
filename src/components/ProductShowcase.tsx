@@ -145,7 +145,7 @@ const ProductShowcase = ({
         <div className="absolute -bottom-24 -right-24 w-96 h-96 bg-[#1b5e20]/5 dark:bg-green-500/10 rounded-full blur-3xl"></div>
         <div className="absolute -top-24 -left-24 w-96 h-96 bg-[#1b5e20]/5 dark:bg-green-500/10 rounded-full blur-3xl"></div>
       </div>
-      <div className="container mx-auto px-8 relative z-10 bg-white/80 dark:bg-gray-900/80 backdrop-blur-md rounded-3xl shadow-lg border border-gray-200/50 dark:border-gray-700/50">
+      <div className="container mx-auto px-8 relative z-10 bg-white/90 dark:bg-gray-900/90 backdrop-blur-md rounded-3xl shadow-xl border border-gray-200/50 dark:border-gray-700/50 py-10">
         <div className="text-center mb-16">
           <motion.div
             className="inline-flex items-center mb-6 px-6 py-2 bg-white/90 dark:bg-gray-800/90 text-[#1b5e20] dark:text-green-400 rounded-full shadow-md border border-[#1b5e20]/10 dark:border-green-500/20 backdrop-blur-md"
@@ -219,29 +219,6 @@ const ProductShowcase = ({
             />
           </div>
         </motion.div>
-
-        <motion.div
-          className="mt-16 text-center"
-          initial={{ opacity: 0, y: 20 }}
-          animate={controls}
-          variants={{
-            visible: {
-              opacity: 1,
-              y: 0,
-              transition: { duration: 0.5, delay: 0.5 },
-            },
-          }}
-        >
-          <Link to="/category/all">
-            <Button
-              className="bg-[#1b5e20] hover:bg-[#0d3d11] text-white px-10 py-6 rounded-lg shadow-lg hover:shadow-xl transition-all duration-300 text-lg font-medium border border-[#1b5e20]/10 group"
-              size="lg"
-            >
-              View All Products
-              <ArrowRight className="ml-3 h-6 w-6 group-hover:translate-x-1 transition-transform duration-300" />
-            </Button>
-          </Link>
-        </motion.div>
       </div>
     </section>
   );
@@ -300,7 +277,7 @@ const ProductCard = ({ product, variants }: ProductCardProps) => {
   return (
     <motion.div
       variants={variants}
-      className="group flex flex-col bg-white dark:bg-gray-800 rounded-xl overflow-hidden shadow-md hover:shadow-xl transition-all duration-300 h-full cursor-pointer border border-gray-200/60 dark:border-gray-700/60 hover:border-[#1b5e20]/60 dark:hover:border-green-500/60"
+      className="group flex flex-col bg-white dark:bg-gray-800 rounded-2xl overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-300 h-full cursor-pointer border-2 border-gray-100 dark:border-gray-700 hover:border-[#1b5e20] dark:hover:border-green-500"
       onMouseEnter={() => {
         setIsHovered(true);
         controls.start("hover");
@@ -310,16 +287,16 @@ const ProductCard = ({ product, variants }: ProductCardProps) => {
         controls.start("initial");
       }}
       onClick={handleProductClick}
-      whileHover={{ y: -5, scale: 1.01 }}
+      whileHover={{ y: -8, scale: 1.02 }}
       initial="initial"
       animate={controls}
     >
-      <div className="relative overflow-hidden h-[280px]">
+      <div className="relative overflow-hidden h-[220px]">
         <div className="absolute top-0 left-0 w-full h-full bg-gradient-to-t from-black/60 to-transparent z-10 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex"></div>
 
         {/* Featured badge if it's a popular product */}
         {product.id === 1 || product.id === 4 ? (
-          <div className="absolute top-4 left-4 z-20 bg-[#1b5e20] text-white px-3 py-1 rounded-md text-xs font-medium shadow-md flex items-center">
+          <div className="absolute top-4 left-4 z-20 bg-[#1b5e20] text-white px-3 py-1 rounded-full text-xs font-medium shadow-md flex items-center">
             <Sparkles className="h-3 w-3 mr-1" />
             Featured
           </div>
@@ -340,7 +317,7 @@ const ProductCard = ({ product, variants }: ProductCardProps) => {
         <img
           src={product.image}
           alt={product.name}
-          className="w-full h-full object-cover transition-all duration-500 ease-in-out group-hover:scale-105"
+          className="w-full h-full object-cover transition-all duration-500 ease-in-out group-hover:scale-110"
           onError={(e) => {
             console.error(
               `Failed to load product image: ${e.currentTarget.src}`,
@@ -360,14 +337,14 @@ const ProductCard = ({ product, variants }: ProductCardProps) => {
         >
           <div className="flex flex-wrap gap-2">
             <span
-              className="px-3 py-1 bg-white/90 dark:bg-gray-800/90 text-[#1b5e20] dark:text-green-400 rounded-md text-xs font-medium border-0 shadow-sm cursor-pointer hover:bg-[#1b5e20] hover:text-white transition-colors duration-300 flex items-center"
+              className="px-3 py-1 bg-white/90 dark:bg-gray-800/90 text-[#1b5e20] dark:text-green-400 rounded-full text-xs font-medium border-0 shadow-sm cursor-pointer hover:bg-[#1b5e20] hover:text-white transition-colors duration-300 flex items-center"
               onClick={(e) => handleCategoryClick(e, product.category)}
             >
               <Tag className="h-3 w-3 mr-1" />
               {product.category}
             </span>
             {product.weight && (
-              <span className="px-3 py-1 bg-white/90 dark:bg-gray-800/90 text-[#1b5e20] dark:text-green-400 rounded-md text-xs font-medium border-0 shadow-sm flex items-center">
+              <span className="px-3 py-1 bg-white/90 dark:bg-gray-800/90 text-[#1b5e20] dark:text-green-400 rounded-full text-xs font-medium border-0 shadow-sm flex items-center">
                 <ShieldCheck className="h-3 w-3 mr-1" />
                 {product.weight}
               </span>
@@ -375,13 +352,13 @@ const ProductCard = ({ product, variants }: ProductCardProps) => {
           </div>
         </motion.div>
       </div>
-      <div className="p-5 bg-white dark:bg-gray-800 flex flex-col flex-grow relative">
+      <div className="p-6 bg-white dark:bg-gray-800 flex flex-col flex-grow relative">
         <div className="mb-3 flex justify-between items-start">
-          <h3 className="text-lg font-semibold text-gray-900 dark:text-white font-sans tracking-tight leading-tight group-hover:text-[#1b5e20] dark:group-hover:text-green-400 transition-colors duration-300">
+          <h3 className="text-xl font-bold text-gray-900 dark:text-white font-sans tracking-tight leading-tight group-hover:text-[#1b5e20] dark:group-hover:text-green-400 transition-colors duration-300">
             {product.name}
           </h3>
           <motion.div
-            className="bg-[#1b5e20]/5 dark:bg-green-500/10 p-1.5 rounded-full"
+            className="bg-[#1b5e20]/10 dark:bg-green-500/20 p-2 rounded-full"
             whileHover={{ rotate: 15, scale: 1.1 }}
             variants={{
               initial: { scale: 0.9, opacity: 0.5 },
@@ -401,18 +378,18 @@ const ProductCard = ({ product, variants }: ProductCardProps) => {
         {/* Subcategories */}
         {product.subcategories && product.subcategories.length > 0 && (
           <div className="mb-4">
-            <div className="flex flex-wrap gap-1.5 mt-1">
+            <div className="flex flex-wrap gap-2 mt-2">
               {product.subcategories.slice(0, 3).map((subcategory, index) => (
                 <span
                   key={index}
-                  className="px-2 py-1 bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 rounded-md text-xs font-medium cursor-pointer hover:bg-[#1b5e20]/10 hover:text-[#1b5e20] dark:hover:bg-green-900/30 dark:hover:text-green-400 transition-colors duration-300 flex items-center"
+                  className="px-3 py-1 bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 rounded-full text-xs font-medium cursor-pointer hover:bg-[#1b5e20]/10 hover:text-[#1b5e20] dark:hover:bg-green-900/30 dark:hover:text-green-400 transition-colors duration-300 flex items-center"
                   onClick={(e) => handleSubcategoryClick(e, subcategory)}
                 >
                   {subcategory}
                 </span>
               ))}
               {product.subcategories.length > 3 && (
-                <span className="px-2 py-1 bg-gray-100 dark:bg-gray-700 text-gray-500 dark:text-gray-400 rounded-md text-xs font-medium">
+                <span className="px-3 py-1 bg-gray-100 dark:bg-gray-700 text-gray-500 dark:text-gray-400 rounded-full text-xs font-medium">
                   +{product.subcategories.length - 3} more
                 </span>
               )}
@@ -421,7 +398,7 @@ const ProductCard = ({ product, variants }: ProductCardProps) => {
         )}
 
         <motion.div
-          className="mt-auto pt-3 border-t border-gray-200/70 dark:border-gray-700/70 flex justify-between items-center"
+          className="mt-auto pt-4 border-t border-gray-200/70 dark:border-gray-700/70 flex justify-between items-center"
           variants={{
             initial: { opacity: 0.7 },
             hover: { opacity: 1 },
@@ -432,11 +409,11 @@ const ProductCard = ({ product, variants }: ProductCardProps) => {
             {product.images?.length || 1} {t ? t("product.photos") : "photos"}
           </span>
           <motion.div
-            className="text-xs text-[#1b5e20] dark:text-green-400 font-medium flex items-center bg-[#1b5e20]/5 dark:bg-green-500/10 px-3 py-1.5 rounded-md"
-            whileHover={{ x: 2, backgroundColor: "rgba(27, 94, 32, 0.1)" }}
+            className="text-sm text-white font-medium flex items-center bg-[#1b5e20] dark:bg-green-600 px-4 py-2 rounded-full shadow-md"
+            whileHover={{ scale: 1.05, x: 2 }}
           >
             {t ? t("products.viewDetails") : "View Details"}
-            <ArrowRight className="h-3.5 w-3.5 ml-1 group-hover:translate-x-1 transition-transform duration-300" />
+            <ArrowRight className="h-3.5 w-3.5 ml-1.5 group-hover:translate-x-1 transition-transform duration-300" />
           </motion.div>
         </motion.div>
       </div>
@@ -455,76 +432,27 @@ const ProductCarousel = ({
   itemVariants,
   controls,
 }: ProductCarouselProps) => {
-  const [emblaRef, emblaApi] = useEmblaCarousel({
-    loop: true,
-    align: "start",
-    slidesToScroll: 1,
-  });
-  const [canScrollPrev, setCanScrollPrev] = useState(false);
-  const [canScrollNext, setCanScrollNext] = useState(true);
-
-  const scrollPrev = () => emblaApi && emblaApi.scrollPrev();
-  const scrollNext = () => emblaApi && emblaApi.scrollNext();
-
-  const onSelect = useCallback(() => {
-    if (!emblaApi) return;
-    setCanScrollPrev(emblaApi.canScrollPrev());
-    setCanScrollNext(emblaApi.canScrollNext());
-  }, [emblaApi]);
-
-  useEffect(() => {
-    if (!emblaApi) return;
-    onSelect();
-    emblaApi.on("select", onSelect);
-    emblaApi.on("reInit", onSelect);
-    return () => {
-      emblaApi.off("select", onSelect);
-      emblaApi.off("reInit", onSelect);
-    };
-  }, [emblaApi, onSelect]);
-
+  // Switch from carousel to grid layout
   return (
     <div className="relative">
-      <div className="overflow-hidden" ref={emblaRef}>
-        <div className="flex gap-6">
-          {products.map((product, index) => (
-            <div
-              className="flex-[0_0_100%] min-w-0 sm:flex-[0_0_50%] lg:flex-[0_0_33.333%]"
-              key={product.id}
-            >
-              <motion.div
-                initial={{ opacity: 0, y: 50 }}
-                animate={controls}
-                variants={{
-                  visible: {
-                    opacity: 1,
-                    y: 0,
-                    transition: { duration: 0.5, delay: 0.1 * index },
-                  },
-                }}
-              >
-                <ProductCard product={product} variants={itemVariants} />
-              </motion.div>
-            </div>
-          ))}
-        </div>
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+        {products.map((product, index) => (
+          <motion.div
+            key={product.id}
+            initial={{ opacity: 0, y: 50 }}
+            animate={controls}
+            variants={{
+              visible: {
+                opacity: 1,
+                y: 0,
+                transition: { duration: 0.5, delay: 0.1 * index },
+              },
+            }}
+          >
+            <ProductCard product={product} variants={itemVariants} />
+          </motion.div>
+        ))}
       </div>
-
-      <button
-        onClick={scrollPrev}
-        className={`absolute left-0 top-1/2 -translate-y-1/2 -translate-x-3 bg-white/90 dark:bg-gray-800/90 p-3 rounded-lg shadow-md z-10 transition-all duration-300 border border-gray-200/60 dark:border-gray-700/60 ${!canScrollPrev ? "opacity-50 cursor-not-allowed" : "hover:bg-[#1b5e20] hover:text-white"}`}
-        disabled={!canScrollPrev}
-      >
-        <ChevronLeft className="h-5 w-5" />
-      </button>
-
-      <button
-        onClick={scrollNext}
-        className={`absolute right-0 top-1/2 -translate-y-1/2 translate-x-3 bg-white/90 dark:bg-gray-800/90 p-3 rounded-lg shadow-md z-10 transition-all duration-300 border border-gray-200/60 dark:border-gray-700/60 ${!canScrollNext ? "opacity-50 cursor-not-allowed" : "hover:bg-[#1b5e20] hover:text-white"}`}
-        disabled={!canScrollNext}
-      >
-        <ChevronRight className="h-5 w-5" />
-      </button>
     </div>
   );
 };

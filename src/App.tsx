@@ -1,12 +1,12 @@
 import { Suspense, lazy } from "react";
-import { useRoutes, Routes, Route } from "react-router-dom";
+import { Routes, Route } from "react-router-dom";
 import Home from "./components/home";
 import RentalPage from "./components/RentalPage";
 import ProductPage from "./components/ProductPage";
-import routes from "tempo-routes";
 import ErrorBoundary from "./components/ErrorBoundary";
 import LoadingSpinner from "./components/LoadingSpinner";
 import PageTransition from "./components/PageTransition";
+import LocalImagePage from "./components/LocalImagePage";
 
 // Lazy load components
 const ProductCategoryPage = lazy(
@@ -32,6 +32,7 @@ function App() {
             <Route path="/rental" element={<RentalPage />} />
             <Route path="/product/:id" element={<ProductPage />} />
             <Route path="/products" element={<ProductCategoryPage />} />
+            <Route path="/admin/local-images" element={<LocalImagePage />} />
             <Route
               path="/category/:category"
               element={<ProductCategoryPage />}
@@ -41,7 +42,6 @@ function App() {
               <Route path="/tempobook/*" />
             )}
           </Routes>
-          {import.meta.env.VITE_TEMPO === "true" && useRoutes(routes)}
         </PageTransition>
       </Suspense>
     </ErrorBoundary>
